@@ -19,5 +19,22 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $this->call(RolesAndPermissionsSeeder::class);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+        ])->assignRole('admin');
+
+        \App\Models\User::factory(10)->create()->each(function ($user) {
+            $user->assignRole('customer');
+        });
+
+        \App\Models\MealPlan::factory(10)->create();
+        \App\Models\Testimonial::factory(10)->create();
+        \App\Models\SubscriptionPlan::factory(3)->create();
+        \App\Models\Subscription::factory(20)->create();
     }
 }
